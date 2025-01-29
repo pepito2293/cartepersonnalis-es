@@ -141,17 +141,30 @@ function populateEmojiTable() {
 
   emojiList.forEach((emoji, index) => {
     const row = document.createElement("tr");
-    
+
+    // 📌 Cellule contenant l'emoji
     const emojiCell = document.createElement("td");
-    emojiCell.textContent = emoji;
     emojiCell.id = `current-emoji-${index}`;
+
+    // 🔥 Vérifie si c'est une image base64 ou un emoji standard
+    if (emoji.startsWith("data:image")) {
+      const img = document.createElement("img");
+      img.src = emoji;
+      img.width = 30;
+      img.height = 30;
+      emojiCell.appendChild(img);
+    } else {
+      emojiCell.textContent = emoji;
+    }
     row.appendChild(emojiCell);
 
+    // 📌 Cellule avec l'input pour changer l'image
     const inputCell = document.createElement("td");
     const fileInput = document.createElement("input");
     fileInput.type = "file";
     fileInput.accept = "image/*";
     fileInput.dataset.index = index;
+    
     fileInput.addEventListener("change", (event) => {
       const file = event.target.files[0];
       if (file) {
@@ -159,18 +172,20 @@ function populateEmojiTable() {
         reader.onload = (e) => {
           emojiList[index] = e.target.result;
           saveEmojiList();
-          document.getElementById(`current-emoji-${index}`).textContent = emojiList[index];
-          generateCards();
+          populateEmojiTable();  // Recharge correctement la table
+          generateCards();  // Met à jour les cartes
         };
         reader.readAsDataURL(file);
       }
     });
+
     inputCell.appendChild(fileInput);
     row.appendChild(inputCell);
 
     tableBody.appendChild(row);
   });
 }
+
 
 // 🟢 Mise à jour des tailles min/max
 function updatePreview() {
