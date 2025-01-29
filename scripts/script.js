@@ -351,6 +351,6 @@ async function exportCardsAsZip() {
   // Génère le fichier ZIP
   zip.generateAsync({ type: "blob" }).then(function (content) {
     saveAs(content, "cartes_dobble.zip"); // Télécharge le fichier ZIP
-
-
-
+    alert("Les 55 cartes ont été téléchargées en tant que fichier ZIP !");
+  });
+}
