@@ -90,7 +90,7 @@ function positionSymbols(cardDiv, card) {
       size = Math.random() * (maxSize - minSize) + minSize;
       x = margin + Math.random() * (cardSize - 2 * margin - size);
       y = margin + Math.random() * (cardSize - 2 * margin - size);
-      
+
       isValidPosition = positions.every(pos => {
         return Math.hypot(pos.x - x, pos.y - y) > (pos.size + size) / 2 + 10;
       });
@@ -98,12 +98,23 @@ function positionSymbols(cardDiv, card) {
 
     positions.push({ x, y, size });
 
+    // 🟢 Correction du bug : Vérifie si `symbol` est une image base64
     const symbolDiv = document.createElement("div");
     symbolDiv.className = "symbol";
-    symbolDiv.style.fontSize = `${size}px`;
-    symbolDiv.textContent = symbol;
+    symbolDiv.style.position = "absolute";
     symbolDiv.style.left = `${x}px`;
     symbolDiv.style.top = `${y}px`;
+
+    if (symbol.startsWith("data:image")) {
+      const img = document.createElement("img");
+      img.src = symbol;
+      img.style.width = `${size}px`;
+      img.style.height = `${size}px`;
+      symbolDiv.appendChild(img);
+    } else {
+      symbolDiv.textContent = symbol;
+      symbolDiv.style.fontSize = `${size}px`;
+    }
 
     enableDrag(symbolDiv);
     cardDiv.appendChild(symbolDiv);
