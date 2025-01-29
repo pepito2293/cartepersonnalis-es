@@ -351,6 +351,23 @@ async function exportCardsAsZip() {
   // Génère le fichier ZIP
   zip.generateAsync({ type: "blob" }).then(function (content) {
     saveAs(content, "cartes_dobble.zip"); // Télécharge le fichier ZIP
+
+
+// Fonction pour réinitialiser tous les émojis en une seule action
+function resetAllEmojis() {
+  emojiList = [...defaultEmojis];
+  saveEmojiList();
+  populateEmojiTable();
+  generateCards();
+}
+
+// Ajout de l'événement au bouton de réinitialisation totale
+document.addEventListener("DOMContentLoaded", () => {
+  const resetAllButton = document.getElementById("resetAllEmojis");
+  if (resetAllButton) {
+    resetAllButton.addEventListener("click", resetAllEmojis);
+  }
+});
     alert("Les 55 cartes ont été téléchargées en tant que fichier ZIP !");
   });
 }
