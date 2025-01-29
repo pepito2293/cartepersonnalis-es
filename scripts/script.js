@@ -213,3 +213,8 @@ document.addEventListener("DOMContentLoaded", () => {
   populateEmojiTable();
   generateCards();
 });
+
+  // Empêche le comportement par défaut de drag & drop
+  symbol.addEventListener("dragstart", (event) => {
+    event.preventDefault();
+  });
